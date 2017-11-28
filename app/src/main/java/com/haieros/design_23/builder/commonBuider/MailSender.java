@@ -1,4 +1,4 @@
-package com.haieros.design_23.builder;
+package com.haieros.design_23.builder.commonBuider;
 
 /**
  * Created by Kang on 2017/11/28.
