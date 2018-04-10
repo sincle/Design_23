@@ -6,5 +6,5 @@ package com.haieros.design_23.structure.proxy.DynamicProxy;
 
 public interface Subject {
 
-    void visit();
+    Learn<String> visit();
 }

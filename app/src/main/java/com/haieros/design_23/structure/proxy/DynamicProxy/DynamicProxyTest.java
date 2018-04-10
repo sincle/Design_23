@@ -13,40 +13,24 @@ public class DynamicProxyTest {
 
     public static void main(String[] agrs) {
 
-        RealSubject subject = new RealSubject();
-        DynamicProxy proxy = new DynamicProxy(subject);
-
-//        ClassLoader classLoader = subject.getClass().getClassLoader();
-//        Subject instance = (Subject) Proxy.newProxyInstance(classLoader, new Class[]{Subject.class}, proxy);
-//        instance.visit();
-
-//        Class<?> proxyClass = Proxy.getProxyClass(RealSubject.class.getClassLoader(), RealSubject.class.getInterfaces());
+//        RealSubject subject = new RealSubject();
+//        DynamicProxy proxy = new DynamicProxy(subject);
+//
+////        ClassLoader classLoader = subject.getClass().getClassLoader();
+////        Subject instance = (Subject) Proxy.newProxyInstance(classLoader, new Class[]{Subject.class}, proxy);
+////        instance.visit();
+//
+//        Class<?> proxyClass = Proxy.getProxyClass(Subject.class.getClassLoader(), Subject.class.getInterfaces());
 //
 //        try {
 //            Constructor<?> constructor = proxyClass.getConstructor(InvocationHandler.class);
-//            Object o = constructor.newInstance(proxy);
-//            System.out.println("o:"+o.hashCode());
-//            if (o instanceof RealSubject) {
-//                return;
-//            }
-//            Subject o1 = (Subject) o;
-//            System.out.println("o1:"+o.hashCode());
-//            Learn o2 = (Learn) o;
-//            System.out.println("o2:"+o.hashCode());
 //        } catch (NoSuchMethodException e) {
 //            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
 //        }
-
-
-//        Class<?>[] interfaces = proxyClass.getInterfaces();
-//        Constructor<?>[] constructors = proxyClass.getConstructors();
 //
+//
+//        Class<?>[] interfaces = proxyClass.getInterfaces();
+
 //        for (Constructor<?> constructor : constructors) {
 //            String name = constructor.getName();
 //            StringBuilder sb = new StringBuilder(name);
@@ -79,12 +63,14 @@ public class DynamicProxyTest {
 //        }
 
 
-        Subject test = test(RealSubject.class);
-        System.out.println("test:" + test.hashCode());
-        //System.out.println("test:"+test.toString());
-        //test.visit();
-        Learn test1 = (Learn) test;
-        System.out.println("test1:" + test1.hashCode());
+        Subject test = test(Subject.class);
+        Learn<String> visit = test.visit();
+        String learn = visit.learn();
+        System.out.println(learn);
+//        System.out.println("test:" + test.hashCode());
+//        //System.out.println("test:"+test.toString());
+//        Learn test1 = (Learn) test;
+//        System.out.println("test1:" + test1.hashCode());
         //System.out.println("test1:"+test1.toString());
         // test1.learn();
 //        RealSubject r = getR(RealSubject.class);
@@ -96,23 +82,34 @@ public class DynamicProxyTest {
     }
 
     public static <T> T test(final Class<T> clazz) {
-        Object o = null;
-        try {
-            o = clazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        final Object finalO = o;
+//        Object o = null;
+//        try {
+//            o = clazz.newInstance();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+//        final Object finalO = o;
         InvocationHandler invocationHandler = new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                return method.invoke(finalO, args);
+                //Object invoke = method.invoke(finalO, args);
+                return new Learn<String>() {
+
+                    @Override
+                    public String learn() {
+                        System.out.println("sfasdfasdf");
+                        return "3242";
+                    }
+                };
             }
         };
 
-        T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), invocationHandler);
+        //T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), invocationHandler);
+        //clazz.getInterfaces() 获取clazz 实现的接口,此处clazz 为 interface 没有实现接口, 故要满足 动态代理接口
+        // 需要 new 此接口数组 传 进入 供代理实现
+        T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(),  new Class<?>[] { clazz }, invocationHandler);
         //System.out.println("t:"+t.toString());
         return t;
     }
