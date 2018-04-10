@@ -14,4 +14,22 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void main(){
+
+        String s = get(String.class);
+        System.out.println("s:"+s);
+    }
+    public <T> T get(Class<T> clazz) {
+        T t = null;
+        try {
+            t = clazz.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return t;
+    }
 }
