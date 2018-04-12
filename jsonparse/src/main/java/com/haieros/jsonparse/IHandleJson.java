@@ -7,4 +7,6 @@ package com.haieros.jsonparse;
 public interface IHandleJson<T> {
 
     T parseJson(String json);
+
+    void handle(T t);
 }

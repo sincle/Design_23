@@ -23,4 +23,10 @@ class KangJsonParser implements IHandleJson<MQBeannn.ArgsBean> {
         }
         return argsBean;
     }
+
+    @Override
+    public void handle(MQBeannn.ArgsBean argsBean) {
+
+        System.out.println("result:"+argsBean.getData()+",:"+argsBean.getMsg());
+    }
 }

@@ -34,9 +34,9 @@ public class Client {
         String json = new Gson().toJson(mqInBean);
         System.out.println("json:"+json);
         try {
-            JsonParse jsonParse = new JsonParse();
-            MQInBean bean = jsonParse.parse(json, MQInBean.class);
-            List<MQInBean.ArgBean> arg = bean.getArg();
+            JsonParse jsonParse =  JsonParse.getInstance();
+            MQCommonBean bean = jsonParse.parse(json, MQCommonBean.class);
+            List<MQInBean.ArgBean> arg = (List<MQInBean.ArgBean>) bean.getArgs();
             for (MQInBean.ArgBean argBean4 : arg) {
                 System.out.println("arg:"+argBean4.toString());
             }
@@ -59,8 +59,9 @@ public class Client {
         System.out.println("json1:"+json1);
 
         try {
-            JsonParse jsonParse = new JsonParse();
-            MQBeannn bean = jsonParse.parse(json1, MQBeannn.class);
+            JsonParse jsonParse =  JsonParse.getInstance();
+            MQCommonBean bean = jsonParse.parse(json1, MQCommonBean.class);
+            MQBeannn.ArgsBean args = (MQBeannn.ArgsBean) bean.getArgs();
             System.out.println("----------------------------");
             System.out.println("bean:"+bean.toString());
 

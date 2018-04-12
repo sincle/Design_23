@@ -11,7 +11,16 @@ import java.util.HashMap;
 
 public class JsonParse {
 
-    public JsonParse(){
+    private static JsonParse jsonParse;
+    public static JsonParse getInstance(){
+        synchronized (JsonParse.class){
+            if(jsonParse == null) {
+                jsonParse = new JsonParse();
+            }
+        }
+        return jsonParse;
+    }
+    private JsonParse(){
     }
     public <T> T parse(String json, Class<T> clazz) throws Exception {
         return outerParse(json,clazz);
@@ -79,7 +88,9 @@ public class JsonParse {
         if (json == null || "".equals(json)){
             throw new Exception("args`s value can`t be null");
         }
-        Object o = JsonParseFactory.getJsonParse(type).parseJson(json);
+        IHandleJson jsonParse = JsonParseFactory.getJsonParse(type);
+        Object o = jsonParse.parseJson(json);
+        jsonParse.handle(o);
         Field field = t.getClass().getDeclaredField("args");
         field.setAccessible(true);
         field.set(t,o);

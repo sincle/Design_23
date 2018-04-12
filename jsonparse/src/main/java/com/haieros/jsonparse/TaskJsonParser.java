@@ -33,4 +33,11 @@ public class TaskJsonParser implements IHandleJson<List<MQInBean.ArgBean>>{
         }
         return list;
     }
+
+    @Override
+    public void handle(List<MQInBean.ArgBean> argBeans) {
+        for (MQInBean.ArgBean argBean4 : argBeans) {
+            System.out.println("arg:"+argBean4.toString());
+        }
+    }
 }
